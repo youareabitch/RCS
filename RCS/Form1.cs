@@ -48,6 +48,18 @@ namespace RCS
             configs.Add(new Config());
             configs.Add(new Config());
             configs.Add(new Config());
+            configs[0].Xconfig.Add(new ConfigDetail { Offset = 0, Rate = 100 });
+            configs[0].Xconfig.Add(new ConfigDetail { Offset = 0, Rate = 100 });
+            configs[0].Yconfig.Add(new ConfigDetail { Offset = 0, Rate = 100 });
+            configs[0].Yconfig.Add(new ConfigDetail { Offset = 0, Rate = 100 });
+            configs[1].Xconfig.Add(new ConfigDetail { Offset = 0, Rate = 100 });
+            configs[1].Xconfig.Add(new ConfigDetail { Offset = 0, Rate = 100 });
+            configs[1].Yconfig.Add(new ConfigDetail { Offset = 0, Rate = 100 });
+            configs[1].Yconfig.Add(new ConfigDetail { Offset = 0, Rate = 100 });
+            configs[2].Xconfig.Add(new ConfigDetail { Offset = 0, Rate = 100 });
+            configs[2].Xconfig.Add(new ConfigDetail { Offset = 0, Rate = 100 });
+            configs[2].Yconfig.Add(new ConfigDetail { Offset = 0, Rate = 100 });
+            configs[2].Yconfig.Add(new ConfigDetail { Offset = 0, Rate = 100 });
 
             //init current config
             currentConfig = configs[0];
@@ -67,6 +79,8 @@ namespace RCS
                 newConfig.Close();
                 newConfig.Dispose();
             }
+
+            ThreadInit();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -77,71 +91,114 @@ namespace RCS
         private void LeftMouseDown(MSLLHOOKSTRUCT mouseStruct)
         {
             isLeftDown = true;
-            ThreadClear();
-            if (isOpne && (currentConfig.Xconfig.Count > 0 && currentConfig.Yconfig.Count > 0))
-                ThreadInit();
+            //ThreadClear();
+            if (isOpne && (currentConfig.Xconfig.Count > 0 && currentConfig.Yconfig.Count > 0) && (isLeftDown && isRightDown))
+            {
+                if (!xThread.IsAlive)
+                {
+                    xThread = new Thread(HandleMyThread);
+                    xThread.IsBackground = true;
+                    xThread.Start();
+                }
+            }
         }
 
         private void LeftMouseUp(MSLLHOOKSTRUCT mouseStruct)
         {
             isLeftDown = false;
-            ThreadClear();
+            //ThreadClear();
         }
 
         private void RightMouseDown(MSLLHOOKSTRUCT mouseStruct)
         {
             isRightDown = true;
-            ThreadClear();
-            if (isOpne && (currentConfig.Xconfig.Count > 0 && currentConfig.Yconfig.Count > 0))
-                ThreadInit();
+            //ThreadClear();
+            if (isOpne && (currentConfig.Xconfig.Count > 0 && currentConfig.Yconfig.Count > 0) && (isLeftDown && isRightDown))
+            {
+                if (!xThread.IsAlive)
+                {
+                    xThread = new Thread(HandleMyThread);
+                    xThread.IsBackground = true;
+                    xThread.Start();
+                }
+            }
         }
 
         private void RightMouseUp(MSLLHOOKSTRUCT mouseStruct)
         {
             isRightDown = false;
-            ThreadClear();
+            //ThreadClear();
+        }
+
+        private void HandleMyThread()
+        {
+            bool switchFlag = false;
+            while (isLeftDown && isRightDown)
+            {
+                var xOffset = currentConfig.Xconfig[Convert.ToInt32(switchFlag)].Offset;
+                var yOffset = currentConfig.Yconfig[Convert.ToInt32(switchFlag)].Offset;
+                var rate = currentConfig.Xconfig[Convert.ToInt32(switchFlag)].Rate;
+                Thread.Sleep(rate);
+                RelativeMove(xOffset, yOffset);
+                switchFlag = !switchFlag;
+                xOffset = currentConfig.Xconfig[Convert.ToInt32(switchFlag)].Offset;
+                yOffset = currentConfig.Yconfig[Convert.ToInt32(switchFlag)].Offset;
+                rate = currentConfig.Xconfig[Convert.ToInt32(switchFlag)].Rate;
+                Thread.Sleep(rate);
+                RelativeMove(xOffset, yOffset);
+            }
         }
 
         private void ThreadInit()
         {
-            xThread = new Thread(() =>
-            {
-                bool switchFlag = false;
-                while (isLeftDown && isRightDown)
-                {
-                    RelativeMove(currentConfig.Xconfig[Convert.ToInt32(switchFlag)].Offset, 0);
-                    Thread.Sleep(currentConfig.Xconfig[Convert.ToInt32(switchFlag)].Rate);
-                    switchFlag = !switchFlag;
-                }
-            });
-            xThread.Start();
+            xThread = new Thread(HandleMyThread);
+            //xThread = new Thread(() =>
+            //{
+            //    bool switchFlag = false;
+            //    while (isLeftDown && isRightDown)
+            //    {
+            //        var xOffset = currentConfig.Xconfig[Convert.ToInt32(switchFlag)].Offset;
+            //        var yOffset = currentConfig.Yconfig[Convert.ToInt32(switchFlag)].Offset;
+            //        var rate = currentConfig.Xconfig[Convert.ToInt32(switchFlag)].Rate;
+            //        var isFullAuto = currentConfig.isFullAuto;
+            //        RelativeMove(xOffset, yOffset);
+            //        Thread.Sleep(rate);
+            //        switchFlag = !switchFlag;
+            //        xOffset = currentConfig.Xconfig[Convert.ToInt32(switchFlag)].Offset;
+            //        yOffset = currentConfig.Yconfig[Convert.ToInt32(switchFlag)].Offset;
+            //        rate = currentConfig.Xconfig[Convert.ToInt32(switchFlag)].Rate;
+            //        RelativeMove(xOffset, yOffset);
+            //        Thread.Sleep(rate);
+            //        if (!isFullAuto)
+            //            break;
+            //    }
+            //});
+            //xThread.Start();
 
-            yThread = new Thread(() =>
-            {
-                var switchFlag = false;
-                while (isLeftDown && isRightDown)
-                {
-                    RelativeMove(0, currentConfig.Yconfig[Convert.ToInt32(switchFlag)].Offset);
-                    Thread.Sleep(currentConfig.Yconfig[Convert.ToInt32(switchFlag)].Rate);
-                    switchFlag = !switchFlag;
-                }
-            });
-            yThread.Start();
+            //yThread = new Thread(() =>
+            //{
+            //    var switchFlag = false;
+            //    while (isLeftDown && isRightDown)
+            //    {
+            //        RelativeMove(0, currentConfig.Yconfig[Convert.ToInt32(switchFlag)].Offset);
+            //        Thread.Sleep(currentConfig.Yconfig[Convert.ToInt32(switchFlag)].Rate);
+            //        switchFlag = !switchFlag;
+            //    }
+            //});
+            //yThread.Start();
         }
 
         private void ThreadClear()
         {
             if (xThread != null)
-            {
-                xThread.Abort();
-            }
-            xThread = null;
+                xThread.Join();
+        }
 
-            if (yThread != null)
-            {
-                yThread.Abort();
-            }
-            yThread = null;
+        private void initConfigInfo()
+        {
+            label1.Text = $"y = {currentConfig.Yconfig[0].Offset}";
+            label2.Text = $"rate1 = {currentConfig.Xconfig[0].Rate}";
+            label3.Text = $"rate2 = {currentConfig.Xconfig[1].Rate}";
         }
 
         //把按下按鍵後要觸發的事件寫在這裡
@@ -157,18 +214,34 @@ namespace RCS
                     {
                         currentConfig = configs[0];
                         lblCurrnetConfig.Text = "主武器";
+                        initConfigInfo();
                         break;
                     }
                 case 50://按下2
                     {
                         currentConfig = configs[1];
                         lblCurrnetConfig.Text = "副武器";
+                        initConfigInfo();
                         break;
                     }
                 case 51://按下3
                     {
                         currentConfig = configs[2];
                         lblCurrnetConfig.Text = "腎上腺素";
+                        initConfigInfo();
+                        break;
+                    }
+                case 120:
+                    {
+                        isOpne = !isOpne;
+                        if (isOpne)
+                        {
+                            lblIsOn.Text = "On";
+                        }
+                        else
+                        {
+                            lblIsOn.Text = "Off";
+                        }
                         break;
                     }
             }
@@ -205,6 +278,7 @@ namespace RCS
                 int y2 = Convert.ToInt32(loadedConfig.ReadIniFile("config", "y2", "0"));
                 int yRate1 = Convert.ToInt32(loadedConfig.ReadIniFile("config", "yRate1", "1"));
                 int yRate2 = Convert.ToInt32(loadedConfig.ReadIniFile("config", "yRate2", "1"));
+                bool isFullAuto = Convert.ToBoolean(loadedConfig.ReadIniFile("type", "isFullAuto", "true"));
 
                 if (Convert.ToBoolean(loadedConfig.ReadIniFile("type", "forFinka", "false")))
                 {
@@ -215,6 +289,8 @@ namespace RCS
                     configs[2].Yconfig.Clear();
                     configs[2].Yconfig.Add(new ConfigDetail { Offset = y1, Rate = yRate1 });
                     configs[2].Yconfig.Add(new ConfigDetail { Offset = y2, Rate = yRate2 });
+
+                    configs[2].isFullAuto = isFullAuto;
                 }
                 else if (Convert.ToBoolean(loadedConfig.ReadIniFile("type", "isMain", "true")))
                 {
@@ -225,6 +301,8 @@ namespace RCS
                     configs[0].Yconfig.Clear();
                     configs[0].Yconfig.Add(new ConfigDetail { Offset = y1, Rate = yRate1 });
                     configs[0].Yconfig.Add(new ConfigDetail { Offset = y2, Rate = yRate2 });
+
+                    configs[0].isFullAuto = isFullAuto;
                     lblMainConfigName.Text = $"主：{item.Substring(item.LastIndexOf('\\') + 1).Replace(".ini", "")}";
                 }
                 else
@@ -236,8 +314,13 @@ namespace RCS
                     configs[1].Yconfig.Clear();
                     configs[1].Yconfig.Add(new ConfigDetail { Offset = y1, Rate = yRate1 });
                     configs[1].Yconfig.Add(new ConfigDetail { Offset = y2, Rate = yRate2 });
+
+                    configs[1].isFullAuto = isFullAuto;
                     lblSecConfigName.Text = $"副：{item.Substring(item.LastIndexOf('\\') + 1).Replace(".ini", "")}";
                 }
+
+                currentConfig = configs[0];
+                initConfigInfo();
             }
         }
     }
