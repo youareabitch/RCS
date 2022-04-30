@@ -24,6 +24,7 @@ namespace RCS
         List<Config> configs = new List<Config>();
         Config currentConfig;
         bool isOpne = true;
+        Random random = new Random(Guid.NewGuid().GetHashCode());
 
         IniManager iniManager = new IniManager($"{Environment.CurrentDirectory}\\config.ini");
 
@@ -133,19 +134,31 @@ namespace RCS
         private void HandleMyThread()
         {
             bool switchFlag = false;
+            var randomMax = Convert.ToInt32(nudRandomMax.Value);
+            var randomMin = Convert.ToInt32(nudRandomMin.Value);
+            int count = 0;
             while (isLeftDown && isRightDown)
             {
                 var xOffset = currentConfig.Xconfig[Convert.ToInt32(switchFlag)].Offset;
                 var yOffset = currentConfig.Yconfig[Convert.ToInt32(switchFlag)].Offset;
-                var rate = currentConfig.Xconfig[Convert.ToInt32(switchFlag)].Rate;
+                var rate = currentConfig.Xconfig[Convert.ToInt32(switchFlag)].Rate + random.Next(randomMin, randomMax);
                 Thread.Sleep(rate);
-                RelativeMove(xOffset, yOffset);
+                RelativeMove(0, yOffset);
                 switchFlag = !switchFlag;
                 xOffset = currentConfig.Xconfig[Convert.ToInt32(switchFlag)].Offset;
                 yOffset = currentConfig.Yconfig[Convert.ToInt32(switchFlag)].Offset;
-                rate = currentConfig.Xconfig[Convert.ToInt32(switchFlag)].Rate;
+                rate = currentConfig.Xconfig[Convert.ToInt32(switchFlag)].Rate + random.Next(randomMin, randomMax);
                 Thread.Sleep(rate);
-                RelativeMove(xOffset, yOffset);
+                RelativeMove(0, yOffset);
+                count++;
+                if (currentConfig.xDelayCount > 0)
+                {
+                    if(currentConfig.xDelayCount == count)
+                    {
+                        RelativeMove(xOffset, 0);
+                        count = 0;
+                    }
+                }
             }
         }
 
@@ -226,12 +239,12 @@ namespace RCS
                     }
                 case 51://按下3
                     {
-                        currentConfig = configs[2];
-                        lblCurrnetConfig.Text = "腎上腺素";
-                        initConfigInfo();
+                        //currentConfig = configs[2];
+                        //lblCurrnetConfig.Text = "腎上腺素";
+                        //initConfigInfo();
                         break;
                     }
-                case 120:
+                case 120://F9
                     {
                         isOpne = !isOpne;
                         if (isOpne)
@@ -278,6 +291,7 @@ namespace RCS
                 int y2 = Convert.ToInt32(loadedConfig.ReadIniFile("config", "y2", "0"));
                 int yRate1 = Convert.ToInt32(loadedConfig.ReadIniFile("config", "yRate1", "1"));
                 int yRate2 = Convert.ToInt32(loadedConfig.ReadIniFile("config", "yRate2", "1"));
+                int xDelayCount = Convert.ToInt32(loadedConfig.ReadIniFile("config", "xDelayCount", "0"));
                 bool isFullAuto = Convert.ToBoolean(loadedConfig.ReadIniFile("type", "isFullAuto", "true"));
 
                 if (Convert.ToBoolean(loadedConfig.ReadIniFile("type", "forFinka", "false")))
@@ -290,6 +304,7 @@ namespace RCS
                     configs[2].Yconfig.Add(new ConfigDetail { Offset = y1, Rate = yRate1 });
                     configs[2].Yconfig.Add(new ConfigDetail { Offset = y2, Rate = yRate2 });
 
+                    configs[2].xDelayCount = xDelayCount;
                     configs[2].isFullAuto = isFullAuto;
                 }
                 else if (Convert.ToBoolean(loadedConfig.ReadIniFile("type", "isMain", "true")))
@@ -302,6 +317,7 @@ namespace RCS
                     configs[0].Yconfig.Add(new ConfigDetail { Offset = y1, Rate = yRate1 });
                     configs[0].Yconfig.Add(new ConfigDetail { Offset = y2, Rate = yRate2 });
 
+                    configs[0].xDelayCount = xDelayCount;
                     configs[0].isFullAuto = isFullAuto;
                     lblMainConfigName.Text = $"主：{item.Substring(item.LastIndexOf('\\') + 1).Replace(".ini", "")}";
                 }
@@ -315,6 +331,7 @@ namespace RCS
                     configs[1].Yconfig.Add(new ConfigDetail { Offset = y1, Rate = yRate1 });
                     configs[1].Yconfig.Add(new ConfigDetail { Offset = y2, Rate = yRate2 });
 
+                    configs[1].xDelayCount = xDelayCount;
                     configs[1].isFullAuto = isFullAuto;
                     lblSecConfigName.Text = $"副：{item.Substring(item.LastIndexOf('\\') + 1).Replace(".ini", "")}";
                 }
@@ -322,6 +339,22 @@ namespace RCS
                 currentConfig = configs[0];
                 initConfigInfo();
             }
+        }
+
+        private void dummyFun()
+        {
+            var a = true;
+            if (a)
+            {
+                var i = 0;
+                while (i>=0)
+                {
+                    var b = "testString";
+                }
+            }
+
+            var test = new List<object>();
+            var test2 = test.Select(x => x).ToList();
         }
     }
 }

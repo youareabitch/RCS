@@ -12,6 +12,7 @@ namespace RCS
         public List<ConfigDetail> Yconfig { get; set; } = new List<ConfigDetail>();
 
         public bool isFullAuto = true;
+        public int xDelayCount { get; set; } = 0;
     }
 
     public class ConfigDetail

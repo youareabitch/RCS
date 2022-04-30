@@ -43,6 +43,12 @@ namespace RCS
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.nudRandomMax = new System.Windows.Forms.NumericUpDown();
+            this.nudRandomMin = new System.Windows.Forms.NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)(this.nudRandomMax)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudRandomMin)).BeginInit();
             this.SuspendLayout();
             // 
             // lblWeaponConfigPathTitle
@@ -167,11 +173,67 @@ namespace RCS
             this.label5.TabIndex = 12;
             this.label5.Text = "label5";
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(309, 13);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(89, 12);
+            this.label6.TabIndex = 13;
+            this.label6.Text = "隨機變數上限：";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(309, 35);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(89, 12);
+            this.label7.TabIndex = 14;
+            this.label7.Text = "隨機變數下限：";
+            // 
+            // nudRandomMax
+            // 
+            this.nudRandomMax.Location = new System.Drawing.Point(395, 3);
+            this.nudRandomMax.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            -2147483648});
+            this.nudRandomMax.Name = "nudRandomMax";
+            this.nudRandomMax.Size = new System.Drawing.Size(73, 22);
+            this.nudRandomMax.TabIndex = 15;
+            this.nudRandomMax.Value = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
+            // 
+            // nudRandomMin
+            // 
+            this.nudRandomMin.Location = new System.Drawing.Point(395, 31);
+            this.nudRandomMin.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            -2147483648});
+            this.nudRandomMin.Name = "nudRandomMin";
+            this.nudRandomMin.Size = new System.Drawing.Size(73, 22);
+            this.nudRandomMin.TabIndex = 16;
+            this.nudRandomMin.Value = new decimal(new int[] {
+            3,
+            0,
+            0,
+            -2147483648});
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(480, 159);
+            this.Controls.Add(this.nudRandomMin);
+            this.Controls.Add(this.nudRandomMax);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -186,8 +248,10 @@ namespace RCS
             this.Controls.Add(this.ttbWeaponConfigPath);
             this.Controls.Add(this.lblWeaponConfigPathTitle);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "aaaa";
             this.Load += new System.EventHandler(this.Form1_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.nudRandomMax)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudRandomMin)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -209,6 +273,10 @@ namespace RCS
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.NumericUpDown nudRandomMax;
+        private System.Windows.Forms.NumericUpDown nudRandomMin;
     }
 }
 
