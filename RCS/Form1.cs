@@ -42,6 +42,7 @@ namespace RCS
             mouseHook.LeftButtonUp += new MouseHookCallback(LeftMouseUp);
             mouseHook.RightButtonDown += new MouseHookCallback(RightMouseDown);
             mouseHook.RightButtonUp += new MouseHookCallback(RightMouseUp);
+            mouseHook.MiddleButtonDown += new MouseHookCallback(MiddleMouseDown);
             //Installing the Mouse Hooks
             mouseHook.Install();
 
@@ -153,12 +154,29 @@ namespace RCS
                 count++;
                 if (currentConfig.xDelayCount > 0)
                 {
-                    if(currentConfig.xDelayCount == count)
+                    if (currentConfig.xDelayCount == count)
                     {
                         RelativeMove(xOffset, 0);
                         count = 0;
                     }
                 }
+            }
+        }
+
+        private void MiddleMouseDown(MSLLHOOKSTRUCT mouseStruct)
+        {
+            if (ckbIsMiddleOff.Checked)
+            {
+                isOpne = false;
+                SetFunctionEnable(isOpne);
+            }
+            else if (ckbIsMiddleSub.Checked)
+            {
+                currentConfig = configs[1];
+                lblCurrnetConfig.Text = "副武器";
+                initConfigInfo();
+                isOpne = true;
+                SetFunctionEnable(isOpne);
             }
         }
 
@@ -228,6 +246,8 @@ namespace RCS
                         currentConfig = configs[0];
                         lblCurrnetConfig.Text = "主武器";
                         initConfigInfo();
+                        isOpne = true;
+                        SetFunctionEnable(isOpne);
                         break;
                     }
                 case 50://按下2
@@ -235,6 +255,8 @@ namespace RCS
                         currentConfig = configs[1];
                         lblCurrnetConfig.Text = "副武器";
                         initConfigInfo();
+                        isOpne = true;
+                        SetFunctionEnable(isOpne);
                         break;
                     }
                 case 51://按下3
@@ -245,16 +267,10 @@ namespace RCS
                         break;
                     }
                 case 120://F9
+                case 192://~
                     {
                         isOpne = !isOpne;
-                        if (isOpne)
-                        {
-                            lblIsOn.Text = "On";
-                        }
-                        else
-                        {
-                            lblIsOn.Text = "Off";
-                        }
+                        SetFunctionEnable(isOpne);
                         break;
                     }
             }
@@ -341,13 +357,27 @@ namespace RCS
             }
         }
 
+        private void SetFunctionEnable(bool isOpen)
+        {
+            if (isOpen)
+            {
+                lblIsOn.Text = "On";
+                lblIsOn.BackColor = Color.ForestGreen;
+            }
+            else
+            {
+                lblIsOn.Text = "Off";
+                lblIsOn.BackColor = Color.Red;
+            }
+        }
+
         private void dummyFun()
         {
             var a = true;
             if (a)
             {
                 var i = 0;
-                while (i>=0)
+                while (i >= 0)
                 {
                     var b = "testString";
                 }

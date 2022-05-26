@@ -41,12 +41,12 @@ namespace RCS
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.nudRandomMax = new System.Windows.Forms.NumericUpDown();
             this.nudRandomMin = new System.Windows.Forms.NumericUpDown();
+            this.ckbIsMiddleOff = new System.Windows.Forms.CheckBox();
+            this.ckbIsMiddleSub = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.nudRandomMax)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudRandomMin)).BeginInit();
             this.SuspendLayout();
@@ -122,9 +122,12 @@ namespace RCS
             // lblIsOn
             // 
             this.lblIsOn.AutoSize = true;
-            this.lblIsOn.Location = new System.Drawing.Point(21, 35);
+            this.lblIsOn.BackColor = System.Drawing.Color.ForestGreen;
+            this.lblIsOn.Font = new System.Drawing.Font("微軟正黑體", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.lblIsOn.ForeColor = System.Drawing.Color.White;
+            this.lblIsOn.Location = new System.Drawing.Point(17, 31);
             this.lblIsOn.Name = "lblIsOn";
-            this.lblIsOn.Size = new System.Drawing.Size(19, 12);
+            this.lblIsOn.Size = new System.Drawing.Size(49, 31);
             this.lblIsOn.TabIndex = 7;
             this.lblIsOn.Text = "On";
             // 
@@ -154,24 +157,6 @@ namespace RCS
             this.label3.Size = new System.Drawing.Size(40, 12);
             this.label3.TabIndex = 10;
             this.label3.Text = "rate2 = ";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(307, 100);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(33, 12);
-            this.label4.TabIndex = 11;
-            this.label4.Text = "label4";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(309, 129);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(33, 12);
-            this.label5.TabIndex = 12;
-            this.label5.Text = "label5";
             // 
             // label6
             // 
@@ -225,17 +210,39 @@ namespace RCS
             0,
             -2147483648});
             // 
+            // ckbIsMiddleOff
+            // 
+            this.ckbIsMiddleOff.AutoSize = true;
+            this.ckbIsMiddleOff.Location = new System.Drawing.Point(311, 94);
+            this.ckbIsMiddleOff.Name = "ckbIsMiddleOff";
+            this.ckbIsMiddleOff.Size = new System.Drawing.Size(72, 16);
+            this.ckbIsMiddleOff.TabIndex = 17;
+            this.ckbIsMiddleOff.Text = "中鍵關閉";
+            this.ckbIsMiddleOff.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage;
+            this.ckbIsMiddleOff.UseVisualStyleBackColor = true;
+            // 
+            // ckbIsMiddleSub
+            // 
+            this.ckbIsMiddleSub.AutoSize = true;
+            this.ckbIsMiddleSub.Location = new System.Drawing.Point(311, 116);
+            this.ckbIsMiddleSub.Name = "ckbIsMiddleSub";
+            this.ckbIsMiddleSub.Size = new System.Drawing.Size(84, 16);
+            this.ckbIsMiddleSub.TabIndex = 18;
+            this.ckbIsMiddleSub.Text = "中鍵副武器";
+            this.ckbIsMiddleSub.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage;
+            this.ckbIsMiddleSub.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(480, 159);
+            this.Controls.Add(this.ckbIsMiddleSub);
+            this.Controls.Add(this.ckbIsMiddleOff);
             this.Controls.Add(this.nudRandomMin);
             this.Controls.Add(this.nudRandomMax);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -271,12 +278,12 @@ namespace RCS
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.NumericUpDown nudRandomMax;
         private System.Windows.Forms.NumericUpDown nudRandomMin;
+        private System.Windows.Forms.CheckBox ckbIsMiddleOff;
+        private System.Windows.Forms.CheckBox ckbIsMiddleSub;
     }
 }
 
